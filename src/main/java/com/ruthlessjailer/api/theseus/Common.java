@@ -4,6 +4,7 @@ import com.ruthlessjailer.api.theseus.delete.TPSCounter;
 import com.ruthlessjailer.api.theseus.delete.command.CommandBase;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author RuthlessJailer
@@ -322,6 +324,17 @@ public final class Common {
 	}
 
 	/**
+	 * Capitalizes all words and replaces underscores ({@literal "_"}) with spaces ({@literal " "}).
+	 *
+	 * @param input the input string
+	 *
+	 * @return the bountified string
+	 */
+	public static String bountify(final String input) {
+		return Arrays.stream(input.toLowerCase().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
+	}
+
+	/**
 	 * Copies an array from the given start index to the end.
 	 *
 	 * @param array the array to copy
@@ -366,31 +379,14 @@ public final class Common {
 	 * @return the array with appended values
 	 */
 	@SafeVarargs
-	public static <T> T[] append(@NonNull final T[] array, @NonNull final T... objects) {
+	public static <T> T[] append(@NonNull final T[] array, final T... objects) {
 
-		T[] copied = Arrays.copyOf(array, array.length);//clone
+		final T[] copied = Arrays.copyOf(array, array.length + objects.length);//clone
 
+		int i = array.length;
 		for (final T object : objects) {//fill
-			copied = append(copied, object);//add an element
+			copied[i++] = object;
 		}
-
-		return copied;
-	}
-
-	/**
-	 * Appends given object to given array.
-	 *
-	 * @param array  the array to append to
-	 * @param object the object to appended to the array
-	 *
-	 * @return the array with appended value
-	 */
-	public static <T> T[] append(@NonNull final T[] array, @NonNull final T object) {
-		final T[] copied = Arrays.copyOf(array, array.length + 1);
-
-		copied[array.length] = object;
-
-		System.arraycopy(array, 0, copied, 0, array.length);
 
 		return copied;
 	}
@@ -404,7 +400,7 @@ public final class Common {
 	 * @return the array with prepended values
 	 */
 	@SafeVarargs
-	public static <T> T[] prepend(@NonNull final T[] array, @NonNull final T... objects) {
+	public static <T> T[] prepend(@NonNull final T[] array, final T... objects) {
 
 		T[] copied = Arrays.copyOf(array, array.length);//clone
 

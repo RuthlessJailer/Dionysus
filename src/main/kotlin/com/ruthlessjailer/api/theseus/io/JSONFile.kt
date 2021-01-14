@@ -2,6 +2,7 @@ package com.ruthlessjailer.api.theseus.io
 
 import com.google.gson.*
 import org.apache.commons.io.IOUtils
+import org.apache.commons.lang.ClassUtils
 import java.io.ByteArrayOutputStream
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -25,17 +26,37 @@ abstract class JSONFile(path: String, val GSON: Gson = GsonBuilder().setPrettyPr
 		}
 
 		@JvmStatic
+		private fun blankObject(type: Class<*>) = when {
+			type.isAssignableFrom(Number::class.javaObjectType)  -> {//number
+				0
+			}
+			type.isAssignableFrom(String::class.javaObjectType)  -> {//string
+				""
+			}
+			type.isAssignableFrom(Char::class.javaObjectType)    -> {//char
+				' '
+			}
+			type.isAssignableFrom(Boolean::class.javaObjectType) -> {//boolean
+				false
+			}
+			else                                                 -> {//object
+				Any()
+			}
+		}
+
+		@JvmStatic
 		private val GSON: Gson = GsonBuilder().setPrettyPrinting().create()
 
 		@JvmStatic
 		fun emptyJSON(clazz: Class<out JSONFile>): JsonElement {
-			val content: MutableMap<String, String> = HashMap()
+			val content: MutableMap<String, Any> = HashMap()
 
 			getConfigFields(clazz).forEach {
-				content[it.name.toLowerCase()] = if (it.type.isAssignableFrom(List::class.java) || it.type.isArray) {
-					"[]"
+				val type = ClassUtils.primitiveToWrapper(it.type)
+				content[it.name.toLowerCase()] = if (type.isAssignableFrom(List::class.java) || type.isArray) {
+					listOf("")
 				} else {
-					""
+					blankObject(type)
 				}
 			}
 
