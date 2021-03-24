@@ -36,7 +36,6 @@ abstract class TextFile(path: String, content: String = "") : IFile {
 		setContents(read())
 
 		if (!file.exists()) {
-			file.parentFile ?: file.mkdirs()
 			file.createNewFile()
 			val `in` = getResourceAsStream(removeStartingSeparatorChar(path))
 			Files.copy(`in` ?: return this, file.toPath(), StandardCopyOption.REPLACE_EXISTING)
@@ -62,4 +61,18 @@ abstract class TextFile(path: String, content: String = "") : IFile {
 	}
 
 	abstract fun getResourceAsStream(path: String): InputStream?
+
+	/**
+	 * Utility function to reload the file, fixing default values in the process.
+	 *
+	 * @return a new instance of the child class.
+	 */
+	abstract fun reload(): TextFile
+
+	/**
+	 * Creates a new instance of the class.
+	 *
+	 * @return a new instance of the child class
+	 */
+	abstract fun getNewInstance(content: String): TextFile
 }

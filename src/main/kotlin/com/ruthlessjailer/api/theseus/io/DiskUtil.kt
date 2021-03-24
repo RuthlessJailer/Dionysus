@@ -47,7 +47,7 @@ object DiskUtil {
 	@SneakyThrows
 	fun createFile(file: File) {
 		if (!file.exists()) {
-			Checks.verify(if (file.parentFile == null) file.mkdirs() && file.createNewFile() else file.createNewFile(), "Failed to create file.", IOException::class.java)
+			Checks.verify(if (!file.parentFile.exists()) file.mkdirs() && file.createNewFile() else file.createNewFile(), "Failed to create file.", IOException::class.java)
 		}
 	}
 

@@ -1,7 +1,7 @@
 package com.ruthlessjailer.api.theseus;
 
-import com.ruthlessjailer.api.theseus.delete.PluginBase;
 import lombok.SneakyThrows;
+import org.bukkit.plugin.PluginBase;
 
 import java.lang.reflect.InvocationTargetException;
 

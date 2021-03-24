@@ -3,12 +3,13 @@ package com.ruthlessjailer.api.theseus.multiversion;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.ruthlessjailer.api.theseus.Common;
-import com.ruthlessjailer.api.theseus.item.ItemBuilder;
 import lombok.Getter;
 import lombok.NonNull;
+import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -301,8 +302,10 @@ public enum XMaterial {
 											   : material, 1, material == null
 															  ? 0
 															  : this.data);//if material is null then default to STONE(0)
-		if (material == null || parseMaterial(false) == null) {//set name for old item
-			return ItemBuilder.of(item).name("&r" + prettyName()).build().create();
+		if (material == null || parseMaterial(false) == null && item.hasItemMeta()) {//set name for old item
+			final ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(ChatColor.RESET + prettyName());
+			item.setItemMeta(meta);
 		}
 
 		return item;

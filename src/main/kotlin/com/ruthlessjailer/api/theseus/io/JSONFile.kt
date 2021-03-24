@@ -14,7 +14,7 @@ import kotlin.collections.HashMap
 /**
  * @author RuthlessJailer
  */
-abstract class JSONFile(path: String, val GSON: Gson = GsonBuilder().setPrettyPrinting().create(), content: String = "") : TextFile(path, content) {
+abstract class JSONFile(path: String, val GSON: Gson = GsonBuilder().create(), content: String = "") : TextFile(path, content) {
 
 	companion object {
 
@@ -107,9 +107,9 @@ abstract class JSONFile(path: String, val GSON: Gson = GsonBuilder().setPrettyPr
 		}
 
 		//some values are missing
-		val `in` = getResourceAsStream(removeStartingSeparatorChar(path))
+		val `in` = getResourceAsStream(removeStartingSeparatorChar(path)) ?: getResourceAsStream(file.name)
 				   ?: //it's not a resource; we can't do anything
-				   throw UnsupportedOperationException("No resource found for file ${file.path}.")
+				   throw UnsupportedOperationException("No resource found for ${removeStartingSeparatorChar(path)} or ${file.name}.")
 		val out = ByteArrayOutputStream()
 		IOUtils.copy(`in`, out) //get it to a byte array
 		out.close()
@@ -138,19 +138,11 @@ abstract class JSONFile(path: String, val GSON: Gson = GsonBuilder().setPrettyPr
 	 */
 	fun readFile(): JsonElement = JsonParser().parse(contents)
 
-	fun reload(): JSONFile {
+	override fun reload(): JSONFile {
 		load()
 		fixConfig()
 		save()
-		return getNewInstance(contents)
+		return getNewInstance(contents) as JSONFile
 	}
-
-	/**
-	 * Creates a new instance of the class.
-	 *
-	 * @return a new instance of the child class
-	 */
-	abstract fun getNewInstance(content: String): JSONFile
-
 
 }

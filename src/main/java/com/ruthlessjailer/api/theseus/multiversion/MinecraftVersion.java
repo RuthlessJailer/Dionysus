@@ -1,6 +1,5 @@
 package com.ruthlessjailer.api.theseus.multiversion;
 
-import com.ruthlessjailer.api.theseus.delete.Chat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -72,7 +71,8 @@ public enum MinecraftVersion {
 		} else {
 			CURRENT_VERSION = MinecraftVersion.v1_3_OR_OLDER;
 		}
-		Chat.info(String.format("Detected server version %s.", MinecraftVersion.CURRENT_VERSION.getXname()));
+//		Chat.info(String.format("Detected server version %s.", MinecraftVersion.CURRENT_VERSION.getXname()));
+		System.out.println(String.format("Detected server version %s.", MinecraftVersion.CURRENT_VERSION.getXname()));
 	}
 
 	private final int         id;

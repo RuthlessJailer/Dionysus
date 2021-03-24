@@ -1,7 +1,5 @@
 package com.ruthlessjailer.api.theseus;
 
-import com.ruthlessjailer.api.theseus.delete.TPSCounter;
-import com.ruthlessjailer.api.theseus.delete.command.CommandBase;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
@@ -9,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permissible;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +19,8 @@ import java.util.stream.Collectors;
  */
 public final class Common {
 
-	public static final Random     RANDOM = new Random();
-	private static      TPSCounter TPS_COUNTER;
+	public static final Random RANDOM = new Random();
+//	private static      TPSCounter TPS_COUNTER;
 
 	//	TODO port this over to poseidon
 //	static {//this because you can't schedule tasks while the plugin is disabled
@@ -35,17 +32,17 @@ public final class Common {
 //		}, 1000);
 //	}
 
-	/**
-	 * A lot of {@link Common} methods are called while the plugin is starting up.
-	 *
-	 * @return whether there is a {@link TPSCounter} instance or not yet.
-	 */
-	public static boolean hasTPSCounter() { return TPS_COUNTER != null; }
-
-	/**
-	 * @return the {@link TPSCounter} instance.
-	 */
-	public static TPSCounter getTPSCounter() { return TPS_COUNTER; }
+//	/**
+//	 * A lot of {@link Common} methods are called while the plugin is starting up.
+//	 *
+//	 * @return whether there is a {@link TPSCounter} instance or not yet.
+//	 */
+//	public static boolean hasTPSCounter() { return TPS_COUNTER != null; }
+//
+//	/**
+//	 * @return the {@link TPSCounter} instance.
+//	 */
+//	public static TPSCounter getTPSCounter() { return TPS_COUNTER; }
 //	/*
 //	 *//**
 //	 * Cancels a task.
@@ -380,7 +377,6 @@ public final class Common {
 	 */
 	@SafeVarargs
 	public static <T> T[] append(@NonNull final T[] array, final T... objects) {
-
 		final T[] copied = Arrays.copyOf(array, array.length + objects.length);//clone
 
 		int i = array.length;
@@ -539,27 +535,27 @@ public final class Common {
 		return convert(Bukkit.getOnlinePlayers(), Player::getDisplayName);
 	}
 
-	/**
-	 * Checks if given {@link Permissible} {@link Permissible#isOp() is op}, has the {@link CommandBase#getStarPermissionSyntax() star permission}, or has the given
-	 * permission.
-	 *
-	 * @param permissible the {@link Permissible} to check
-	 * @param permission  the permission to check (last resort)
-	 *
-	 * @return {@code true} if the {@link Permissible} {@link Permissible#isOp() is op}, has the {@link CommandBase#getStarPermissionSyntax() star permission}, or
-	 * 		has the
-	 * 		given permission; {@code false} if either argument is null or the given requirements are not met
-	 */
-	public static boolean hasPermission(final Permissible permissible, final String permission) {
-		if (permissible == null) {
-			return false;
-		}
-
-		return permissible.isOp() ||
-			   permissible.hasPermission(CommandBase.getStarPermissionSyntax()) ||
-			   (permission != null &&
-				permissible.hasPermission(permission));
-	}
+//	/**
+//	 * Checks if given {@link Permissible} {@link Permissible#isOp() is op}, has the {@link CommandBase#getStarPermissionSyntax() star permission}, or has the given
+//	 * permission.
+//	 *
+//	 * @param permissible the {@link Permissible} to check
+//	 * @param permission  the permission to check (last resort)
+//	 *
+//	 * @return {@code true} if the {@link Permissible} {@link Permissible#isOp() is op}, has the {@link CommandBase#getStarPermissionSyntax() star permission}, or
+//	 * 		has the
+//	 * 		given permission; {@code false} if either argument is null or the given requirements are not met
+//	 */
+//	public static boolean hasPermission(final Permissible permissible, final String permission) {
+//		if (permissible == null) {
+//			return false;
+//		}
+//
+//		return permissible.isOp() ||
+//			   permissible.hasPermission(CommandBase.getStarPermissionSyntax()) ||
+//			   (permission != null &&
+//				permissible.hasPermission(permission));
+//	}
 
 	/**
 	 * Returns whether or not the given {@link ItemStack item} is capable of having {@link ItemMeta meta}.

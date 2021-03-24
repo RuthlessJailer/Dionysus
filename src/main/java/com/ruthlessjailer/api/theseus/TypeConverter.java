@@ -7,6 +7,7 @@ package com.ruthlessjailer.api.theseus;
  * @see Common#convert(Iterable, TypeConverter)
  * @see Common#convert(Object[], Object[], TypeConverter)
  */
+@FunctionalInterface
 public interface TypeConverter<O, N> {
 
 	N convert(O value);

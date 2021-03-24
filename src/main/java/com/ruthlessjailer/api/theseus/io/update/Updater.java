@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ruthlessjailer.api.theseus.Checks;
 import com.ruthlessjailer.api.theseus.ReflectUtil;
-import com.ruthlessjailer.api.theseus.delete.io.DiskUtil;
+import com.ruthlessjailer.api.theseus.io.DiskUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -54,14 +54,14 @@ public class Updater {
 	private       boolean    log      = true;
 
 	public Updater(final int id) {
-		this(Checks.instanceCheck(), id);
+		this((JavaPlugin) Checks.instanceCheck(), id);
 	}
 
 	public Updater(@NonNull final JavaPlugin plugin, final int id) {
 		this.plugin  = plugin;
 		this.id      = id;
 		this.jar     = ReflectUtil.invokeMethod(JavaPlugin.class, "getFile", plugin);
-		this.folder  = DiskUtil.getFile(Bukkit.getWorldContainer().getPath() + "/plugins");
+		this.folder  = DiskUtil.INSTANCE.getFile(Bukkit.getWorldContainer().getPath() + "/plugins");
 		this.current = plugin.getDescription().getVersion().replaceAll("[^0-9.]", "");
 	}
 
